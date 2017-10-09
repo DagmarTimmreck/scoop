@@ -34,6 +34,7 @@ const routes = {
   },
   '/comments/:id': {
     'PUT': updateComment,
+    'DELETE': deleteComment,
   },
 };
 
@@ -277,6 +278,26 @@ function updateComment(url, request) {
     response.status = 404;
   }
 
+  return response;
+}
+
+function deleteComment(url) {
+  const id = Number(url.split('/').filter(segment => segment)[1]);
+  const savedComment = database.comments[id];
+  const response = {};
+
+  if (savedComment) {
+    const savedCommentUser = database.users[savedComment.username];
+    const savedCommentArticle = database.articles[savedComment.articleId];
+    savedCommentUser.commentIds =
+    savedCommentUser.commentIds.filter(value => value !== id);
+    savedCommentArticle.commentIds =
+      savedCommentArticle.commentIds.filter(value => value !== id);
+    database.comments[id] = null;
+    response.status = 204;
+  } else {
+    response.status = 404;
+  }
   return response;
 }
 

@@ -300,70 +300,70 @@ describe('Scoop - server.js: ', () => {
     });
   });
 
-  // describe('/comments/:id DELETE', () => {
-  //   beforeEach(() => {
-  //     database.users['user'] = {
-  //       username: 'user',
-  //       articleIds: [1],
-  //       commentIds: [1, 2],
-  //     };
-  //     database.articles[1] = {
-  //       id: 1,
-  //       title: 'Title',
-  //       url: 'http://url.com',
-  //       username: 'user',
-  //       commentIds: [1, 2],
-  //     };
-  //     database.comments[1] = {
-  //       id: 1,
-  //       body: 'Body',
-  //       username: 'user',
-  //       articleId: 1,
-  //     };
-  //     database.comments[2] = {
-  //       id: 2,
-  //       body: 'Body',
-  //       username: 'user2',
-  //       articleId: 1,
-  //     };
-  //   });
-  //
-  //   it('routes[\'/comments/:id\'] should have a method called DELETE', () => {
-  //     expect(routes['/comments/:id']['DELETE']).to.exist;
-  //   });
-  //
-  //   it('routes[\'/comments/:id\'].DELETE should delete an existing comment', () => {
-  //     routes['/comments/:id']['DELETE']('/comments/1');
-  //
-  //     expect(database.comments[1]).to.equal(null);
-  //   });
-  //
-  //   it('routes[\'/comments/:id\'].DELETE should remove a deleted comment ID from the author\'s comment IDs', () => {
-  //     routes['/comments/:id']['DELETE']('/comments/1');
-  //
-  //     expect(database.users['user'].commentIds).to.eql([2]);
-  //   });
-  //
-  //   it('routes[\'/comments/:id\'].DELETE should remove a deleted comment ID from the article\'s comment IDs', () => {
-  //     routes['/comments/:id']['DELETE']('/comments/1');
-  //
-  //     expect(database.articles[1].commentIds).to.eql([2]);
-  //   });
-  //
-  //   it('routes[\'/comments/:id\'].DELETE should return a 204 response after a succesful delete', () => {
-  //     const response = routes['/comments/:id']['DELETE']('/comments/1');
-  //
-  //     expect(response).to.exist;
-  //     expect(response.status).to.equal(204);
-  //   });
-  //
-  //   it('routes[\'/comments/:id\'].DELETE should return a 404 response with a non-existent comment ID', () => {
-  //     const response = routes['/comments/:id']['DELETE']('/comments/3');
-  //
-  //     expect(response).to.exist;
-  //     expect(response.status).to.equal(404);
-  //   });
-  // });
+  describe('/comments/:id DELETE', () => {
+    beforeEach(() => {
+      database.users['user'] = {
+        username: 'user',
+        articleIds: [1],
+        commentIds: [1, 2],
+      };
+      database.articles[1] = {
+        id: 1,
+        title: 'Title',
+        url: 'http://url.com',
+        username: 'user',
+        commentIds: [1, 2],
+      };
+      database.comments[1] = {
+        id: 1,
+        body: 'Body',
+        username: 'user',
+        articleId: 1,
+      };
+      database.comments[2] = {
+        id: 2,
+        body: 'Body',
+        username: 'user2',
+        articleId: 1,
+      };
+    });
+
+    it('routes[\'/comments/:id\'] should have a method called DELETE', () => {
+      expect(routes['/comments/:id']['DELETE']).to.exist;
+    });
+
+    it('routes[\'/comments/:id\'].DELETE should delete an existing comment', () => {
+      routes['/comments/:id']['DELETE']('/comments/1');
+
+      expect(database.comments[1]).to.equal(null);
+    });
+
+    it('routes[\'/comments/:id\'].DELETE should remove a deleted comment ID from the author\'s comment IDs', () => {
+      routes['/comments/:id']['DELETE']('/comments/1');
+
+      expect(database.users['user'].commentIds).to.eql([2]);
+    });
+
+    it('routes[\'/comments/:id\'].DELETE should remove a deleted comment ID from the article\'s comment IDs', () => {
+      routes['/comments/:id']['DELETE']('/comments/1');
+
+      expect(database.articles[1].commentIds).to.eql([2]);
+    });
+
+    it('routes[\'/comments/:id\'].DELETE should return a 204 response after a succesful delete', () => {
+      const response = routes['/comments/:id']['DELETE']('/comments/1');
+
+      expect(response).to.exist;
+      expect(response.status).to.equal(204);
+    });
+
+    it('routes[\'/comments/:id\'].DELETE should return a 404 response with a non-existent comment ID', () => {
+      const response = routes['/comments/:id']['DELETE']('/comments/3');
+
+      expect(response).to.exist;
+      expect(response.status).to.equal(404);
+    });
+  });
   //
   // describe('/commnets/:id/upvote PUT', () => {
   //   beforeEach(() => {
