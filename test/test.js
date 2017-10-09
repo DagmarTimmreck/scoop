@@ -42,13 +42,13 @@ describe('Scoop - server.js: ', () => {
       expect(routes['/comments/:id']).to.be.an('object');
     });
 
-  //   it('routes should have a property called /comments/:id/upvote initialized to an object', () => {
-  //     expect(routes['/comments/:id/upvote']).to.be.an('object');
-  //   });
-  //
-  //   it('routes should have a property called /comments/:id/downvote initialized to an object', () => {
-  //     expect(routes['/comments/:id/downvote']).to.be.an('object');
-  //   });
+    it('routes should have a property called /comments/:id/upvote initialized to an object', () => {
+      expect(routes['/comments/:id/upvote']).to.be.an('object');
+    });
+
+    it('routes should have a property called /comments/:id/downvote initialized to an object', () => {
+      expect(routes['/comments/:id/downvote']).to.be.an('object');
+    });
   });
   //
   describe('/comments POST', () => {
@@ -364,90 +364,91 @@ describe('Scoop - server.js: ', () => {
       expect(response.status).to.equal(404);
     });
   });
-  //
-  // describe('/commnets/:id/upvote PUT', () => {
-  //   beforeEach(() => {
-  //     database.users['user'] = {
-  //       username: 'user',
-  //       articleIds: [],
-  //       commentIds: [],
-  //     };
-  //     database.users['other_user'] = {
-  //       username: 'user2',
-  //       articleIds: [],
-  //       commentIds: [],
-  //     };
-  //     database.comments[1] = {
-  //       id: 1,
-  //       body: 'Body',
-  //       username: 'user',
-  //       articleId: 1,
-  //       upvotedBy: ['user'],
-  //       downvotedBy: [],
-  //     };
-  //   });
-  //
-  //   it('routes[\'/comments/:id/upvote\'] should have a method called PUT', () => {
-  //     expect(routes['/comments/:id/upvote']['PUT']).to.exist;
-  //   });
-  //
-  //   it('routes[\'/comments/:id/upvote\'].PUT should upvote an comment', () => {
-  //     routes['/comments/:id/upvote']['PUT']('/comments/1/upvote', { body: { username: 'other_user' } });
-  //
-  //     expect(database.comments[1].upvotedBy).to.contain('user');
-  //     expect(database.comments[1].upvotedBy).to.contain('other_user');
-  //   });
-  //
-  //   it('routes[\'/comments/:id/upvote\'].PUT should not allow a user to upvote multiple times', () => {
-  //     routes['/comments/:id/upvote']['PUT']('/comments/1/upvote', { body: { username: 'user' } });
-  //
-  //     expect(database.comments[1].upvotedBy).to.eql(['user']);
-  //   });
-  //
-  //   it('routes[\'/comments/:id/upvote\'].PUT should remove a user from downvotedBy if they switch to upvote', () => {
-  //     database.comments[1].downvotedBy.push('other_user');
-  //     routes['/comments/:id/upvote']['PUT']('/comments/1/upvote', { body: { username: 'other_user' } });
-  //
-  //     expect(database.comments[1].upvotedBy).to.contain('other_user');
-  //     expect(database.comments[1].downvotedBy).not.to.contain('other_user');
-  //   });
-  //
-  //   it('routes[\'/comments/:id/upvote\'].PUT should return a 200 response after a succesful upvote and send back the upvoted comment', () => {
-  //     const response = routes['/comments/:id/upvote']['PUT']('/comments/1/upvote', { body: { username: 'other_user' } });
-  //
-  //     expect(response).to.exist;
-  //     expect(response.status).to.equal(200);
-  //     expect(response.body.comment).to.eql(database.comments[1]);
-  //   });
-  //
-  //   it('routes[\'/comments/:id/upvote\'].PUT should return a 400 response when supplied a non-existent user', () => {
-  //     const response = routes['/comments/:id/upvote']['PUT']('/comments/1/upvote', { body: { username: 'nonexistent_user' } });
-  //
-  //     expect(response).to.exist;
-  //     expect(response.status).to.equal(400);
-  //   });
-  //
-  //   it('routes[\'/comments/:id/upvote\'].PUT should return a 400 response when supplied a non-existent comment ID', () => {
-  //     const response = routes['/comments/:id/upvote']['PUT']('/comments/2/upvote', { body: { username: 'other_user' } });
-  //
-  //     expect(response).to.exist;
-  //     expect(response.status).to.equal(400);
-  //   });
-  //
-  //   it('routes[\'/comments/:id/upvote\'].PUT should return a 400 response when given no username', () => {
-  //     const response = routes['/comments/:id/upvote']['PUT']('/comments/1/upvote', { body: {} });
-  //
-  //     expect(response).to.exist;
-  //     expect(response.status).to.equal(400);
-  //   });
-  //
-  //   it('routes[\'/comments/:id/upvote\'].PUT should return a 400 response when given no request body', () => {
-  //     const response = routes['/comments/:id/upvote']['PUT']('/comments/1/upvote', {});
-  //
-  //     expect(response).to.exist;
-  //     expect(response.status).to.equal(400);
-  //   });
-  // });
+
+  describe('/commnets/:id/upvote PUT', () => {
+    beforeEach(() => {
+      database.users['user'] = {
+        username: 'user',
+        articleIds: [],
+        commentIds: [],
+      };
+      database.users['other_user'] = {
+        username: 'user2',
+        articleIds: [],
+        commentIds: [],
+      };
+      database.comments[1] = {
+        id: 1,
+        body: 'Body',
+        username: 'user',
+        articleId: 1,
+        upvotedBy: ['user'],
+        downvotedBy: [],
+      };
+    });
+
+    it('routes[\'/comments/:id/upvote\'] should have a method called PUT', () => {
+      expect(routes['/comments/:id/upvote']['PUT']).to.exist;
+    });
+
+    it('routes[\'/comments/:id/upvote\'].PUT should upvote an comment', () => {
+      routes['/comments/:id/upvote']['PUT']('/comments/1/upvote', { body: { username: 'other_user' } });
+
+      expect(database.comments[1].upvotedBy).to.contain('user');
+      expect(database.comments[1].upvotedBy).to.contain('other_user');
+    });
+
+    it('routes[\'/comments/:id/upvote\'].PUT should not allow a user to upvote multiple times', () => {
+      routes['/comments/:id/upvote']['PUT']('/comments/1/upvote', { body: { username: 'user' } });
+
+      expect(database.comments[1].upvotedBy).to.eql(['user']);
+    });
+
+    it('routes[\'/comments/:id/upvote\'].PUT should remove a user from downvotedBy if they switch to upvote', () => {
+      database.comments[1].downvotedBy.push('other_user');
+      routes['/comments/:id/upvote']['PUT']('/comments/1/upvote', { body: { username: 'other_user' } });
+
+      expect(database.comments[1].upvotedBy).to.contain('other_user');
+      expect(database.comments[1].downvotedBy).not.to.contain('other_user');
+    });
+
+    it('routes[\'/comments/:id/upvote\'].PUT should return a 200 response after a succesful upvote and send back the upvoted comment', () => {
+      const response = routes['/comments/:id/upvote']['PUT']('/comments/1/upvote', { body: { username: 'other_user' } });
+
+      expect(response).to.exist;
+      expect(response.status).to.equal(200);
+      expect(response.body.comment).to.eql(database.comments[1]);
+    });
+
+    it('routes[\'/comments/:id/upvote\'].PUT should return a 400 response when given no username', () => {
+      const response = routes['/comments/:id/upvote']['PUT']('/comments/1/upvote', { body: {} });
+
+      expect(response).to.exist;
+      expect(response.status).to.equal(400);
+    });
+
+    it('routes[\'/comments/:id/upvote\'].PUT should return a 400 response when supplied a non-existent user', () => {
+      const response = routes['/comments/:id/upvote']['PUT']('/comments/1/upvote', { body: { username: 'nonexistent_user' } });
+
+      expect(response).to.exist;
+      expect(response.status).to.equal(400);
+    });
+
+    it('routes[\'/comments/:id/upvote\'].PUT should return a 400 response when supplied a non-existent comment ID', () => {
+      const response = routes['/comments/:id/upvote']['PUT']('/comments/2/upvote', { body: { username: 'other_user' } });
+
+      expect(response).to.exist;
+      expect(response.status).to.equal(400);
+    });
+
+
+    it('routes[\'/comments/:id/upvote\'].PUT should return a 400 response when given no request body', () => {
+      const response = routes['/comments/:id/upvote']['PUT']('/comments/1/upvote', {});
+
+      expect(response).to.exist;
+      expect(response.status).to.equal(400);
+    });
+  });
   //
   // describe('/comments/:id/downvote PUT', () => {
   //   beforeEach(() => {
