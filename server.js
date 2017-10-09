@@ -277,6 +277,7 @@ function updateComment(url, request) {
     if (requestComment && requestComment.body) {
       savedComment.body = requestComment.body;
       response.status = 200;
+      response.body = { comment: savedComment };
     } else {
       response.status = 400;
     }

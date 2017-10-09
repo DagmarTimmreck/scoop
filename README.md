@@ -6,6 +6,8 @@
 - comment out all database save/load related stuff
 - extended test 'routes[\'/comments\'].POST should create a new comment' to 'routes[\'/comments\'].POST should create a new comment with the provided data, initialized up and down votes and adds it to the database'
 - switched order of tests and added custom messages to sub-tests
+- reused the upvote and downvote functions
+- double check with the specification and update 'routes[\'/comments/:id\'].PUT should return a 200 response after a succesful update' to 'routes[\'/comments/:id\'].PUT should return a 200 response containing the updated comment after a succesful update'
 
 
 

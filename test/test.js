@@ -259,7 +259,7 @@ describe('Scoop - server.js: ', () => {
       expect(database.comments[1].body).to.not.equal('');
     });
 
-    it('routes[\'/articles/:id\'].PUT should return a 200 response after a succesful update', () => {
+    it('routes[\'/comments/:id\'].PUT should return a 200 response containing the updated comment after a succesful update', () => {
       const updatedComment = {
         id: 1,
         body: 'Updated Body',
@@ -270,6 +270,7 @@ describe('Scoop - server.js: ', () => {
 
       expect(response).to.exist;
       expect(response.status).to.equal(200);
+      expect(response.body.comment.body).to.equal('Updated Body');
     });
 
     it('routes[\'/comments/:id\'].PUT should return a 404 response with a non-existent comment', () => {
