@@ -1,8 +1,10 @@
 // database is let instead of const to allow us to modify it in test.js
-const database = {
+let database = {
   users: {},
   articles: {},
   nextArticleId: 1,
+  comments: {},
+  nextCommentId: 1,
 };
 
 const routes = {
@@ -27,8 +29,12 @@ const routes = {
   '/articles/:id/downvote': {
     'PUT': downvoteArticle,
   },
+  '/comments': {
+    'POST': createComment,
+  },
 };
 
+// user
 function getUser(url) {
   const username = url.split('/').filter(segment => segment)[1];
   const user = database.users[username];
@@ -78,6 +84,7 @@ function getOrCreateUser(url, request) {
   return response;
 }
 
+// articles
 function getArticles() {
   const response = {};
 
@@ -220,6 +227,37 @@ function downvoteArticle(url, request) {
   return response;
 }
 
+// comments
+function createComment(url, request) {
+  const requestComment = request.body && request.body.comment;
+  const response = {};
+
+  if (requestComment
+    && requestComment.body && requestComment.username && requestComment.articleId
+    && database.users[requestComment.username] && database.articles[requestComment.articleId]) {
+    const comment = {
+      id: database.nextCommentId,
+      body: requestComment.body,
+      username: requestComment.username,
+      articleId: requestComment.articleId,
+      upvotedBy: [],
+      downvotedBy: [],
+    };
+
+    database.comments[comment.id] = comment;
+    database.users[comment.username].commentIds.push(comment.id);
+    database.articles[comment.articleId].commentIds.push(comment.id);
+    database.nextCommentId++;
+
+    response.status = 201;
+    response.body = { comment };
+  } else {
+    response.status = 400;
+  }
+  return response;
+}
+
+// generic upvote and downvote
 function upvote(item, username) {
   if (item.downvotedBy.includes(username)) {
     item.downvotedBy.splice(item.downvotedBy.indexOf(username), 1);

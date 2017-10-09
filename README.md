@@ -2,8 +2,11 @@
 
 ## What I did
 
-- setup eslint to work with atom and airbnb-presets / adjust to given style / clean up according to remaining rules
+- setup eslint to work with atom and airbnb-presets / partly adjust to given style / partly clean up according to remaining rules
 - comment out all database save/load related stuff
+- extended test 'routes[\'/comments\'].POST should create a new comment' to 'routes[\'/comments\'].POST should create a new comment with the provided data, initialized up and down votes and adds it to the database'
+- switched order of tests and added custom messages to sub-tests
+
 
 
 ## Project Overview
