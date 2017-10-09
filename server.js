@@ -39,7 +39,9 @@ const routes = {
   '/comments/:id/upvote': {
     'PUT': upvoteComment,
   },
-  '/comments/:id/downvote': {},
+  '/comments/:id/downvote': {
+    'PUT': downvoteComment,
+  },
 };
 
 // user
@@ -313,6 +315,22 @@ function upvoteComment(url, request) {
 
   if (username && database.users[username] && savedComment) {
     upvote(savedComment, username);
+    response.status = 200;
+    response.body = { comment: savedComment };
+  } else {
+    response.status = 400;
+  }
+  return response;
+}
+
+function downvoteComment(url, request) {
+  const id = Number(url.split('/').filter(segment => segment)[1]);
+  const username = request.body && request.body.username;
+  const savedComment = database.comments[id];
+  const response = {};
+
+  if (username && database.users[username] && savedComment) {
+    downvote(savedComment, username);
     response.status = 200;
     response.body = { comment: savedComment };
   } else {

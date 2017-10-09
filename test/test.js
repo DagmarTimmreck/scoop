@@ -449,88 +449,89 @@ describe('Scoop - server.js: ', () => {
       expect(response.status).to.equal(400);
     });
   });
-  //
-  // describe('/comments/:id/downvote PUT', () => {
-  //   beforeEach(() => {
-  //     database.users['user'] = {
-  //       username: 'user',
-  //       articleIds: [],
-  //       commentIds: [],
-  //     };
-  //     database.users['other_user'] = {
-  //       username: 'user2',
-  //       articleIds: [],
-  //       commentIds: [],
-  //     };
-  //     database.comments[1] = {
-  //       id: 1,
-  //       body: 'Body',
-  //       username: 'user',
-  //       articleId: 1,
-  //       upvotedBy: [],
-  //       downvotedBy: ['user'],
-  //     };
-  //   });
-  //
-  //   it('routes[\'/comments/:id/downvote\'] should have a method called PUT', () => {
-  //     expect(routes['/comments/:id/downvote']['PUT']).to.exist;
-  //   });
-  //
-  //   it('routes[\'/comments/:id/downvote\'].PUT should downvote an comment', () => {
-  //     routes['/comments/:id/downvote']['PUT']('/comments/1/downvote', { body: { username: 'other_user' } });
-  //
-  //     expect(database.comments[1].downvotedBy).to.contain('user');
-  //     expect(database.comments[1].downvotedBy).to.contain('other_user');
-  //   });
-  //
-  //   it('routes[\'/comments/:id/downvote\'].PUT should not allow a user to downvote multiple times', () => {
-  //     routes['/comments/:id/downvote']['PUT']('/comments/1/downvote', { body: { username: 'user' } });
-  //
-  //     expect(database.comments[1].downvotedBy).to.eql(['user']);
-  //   });
-  //
-  //   it('routes[\'/comments/:id/downvote\'].PUT should remove a user from upvotedBy if they switch to downvote', () => {
-  //     database.comments[1].upvotedBy.push('other_user');
-  //     routes['/comments/:id/downvote']['PUT']('/comments/1/downvote', { body: { username: 'other_user' } });
-  //
-  //     expect(database.comments[1].downvotedBy).to.contain('other_user');
-  //     expect(database.comments[1].upvotedBy).not.to.contain('other_user');
-  //   });
-  //
-  //   it('routes[\'/comments/:id/downvote\'].PUT should return a 200 response after a succesful downvote and send back the downvoted comment', () => {
-  //     const response = routes['/comments/:id/downvote']['PUT']('/comments/1/downvote', { body: { username: 'other_user' } });
-  //
-  //     expect(response).to.exist;
-  //     expect(response.status).to.equal(200);
-  //     expect(response.body.comment).to.eql(database.comments[1]);
-  //   });
-  //
-  //   it('routes[\'/comments/:id/downvote\'].PUT should return a 400 response when supplied a non-existent user', () => {
-  //     const response = routes['/comments/:id/downvote']['PUT']('/comments/1/downvote', { body: { username: 'nonexistent_user' } });
-  //
-  //     expect(response).to.exist;
-  //     expect(response.status).to.equal(400);
-  //   });
-  //
-  //   it('routes[\'/comments/:id/downvote\'].PUT should return a 400 response when supplied a non-existent comment ID', () => {
-  //     const response = routes['/comments/:id/downvote']['PUT']('/comments/2/downvote', { body: { username: 'other_user' } });
-  //
-  //     expect(response).to.exist;
-  //     expect(response.status).to.equal(400);
-  //   });
-  //
-  //   it('routes[\'/comments/:id/downvote\'].PUT should return a 400 response when given no username', () => {
-  //     const response = routes['/comments/:id/downvote']['PUT']('/comments/1/downvote', { body: {} });
-  //
-  //     expect(response).to.exist;
-  //     expect(response.status).to.equal(400);
-  //   });
-  //
-  //   it('routes[\'/comments/:id/downvote\'].PUT should return a 400 response when given no request body', () => {
-  //     const response = routes['/comments/:id/downvote']['PUT']('/comments/1/downvote', {});
-  //
-  //     expect(response).to.exist;
-  //     expect(response.status).to.equal(400);
-  //   });
-  // });
+
+  describe('/comments/:id/downvote PUT', () => {
+    beforeEach(() => {
+      database.users['user'] = {
+        username: 'user',
+        articleIds: [],
+        commentIds: [],
+      };
+      database.users['other_user'] = {
+        username: 'user2',
+        articleIds: [],
+        commentIds: [],
+      };
+      database.comments[1] = {
+        id: 1,
+        body: 'Body',
+        username: 'user',
+        articleId: 1,
+        upvotedBy: [],
+        downvotedBy: ['user'],
+      };
+    });
+
+    it('routes[\'/comments/:id/downvote\'] should have a method called PUT', () => {
+      expect(routes['/comments/:id/downvote']['PUT']).to.exist;
+    });
+
+    it('routes[\'/comments/:id/downvote\'].PUT should downvote an comment', () => {
+      routes['/comments/:id/downvote']['PUT']('/comments/1/downvote', { body: { username: 'other_user' } });
+
+      expect(database.comments[1].downvotedBy).to.contain('user');
+      expect(database.comments[1].downvotedBy).to.contain('other_user');
+    });
+
+    it('routes[\'/comments/:id/downvote\'].PUT should not allow a user to downvote multiple times', () => {
+      routes['/comments/:id/downvote']['PUT']('/comments/1/downvote', { body: { username: 'user' } });
+
+      expect(database.comments[1].downvotedBy).to.eql(['user']);
+    });
+
+    it('routes[\'/comments/:id/downvote\'].PUT should remove a user from upvotedBy if they switch to downvote', () => {
+      database.comments[1].upvotedBy.push('other_user');
+      routes['/comments/:id/downvote']['PUT']('/comments/1/downvote', { body: { username: 'other_user' } });
+
+      expect(database.comments[1].downvotedBy).to.contain('other_user');
+      expect(database.comments[1].upvotedBy).not.to.contain('other_user');
+    });
+
+    it('routes[\'/comments/:id/downvote\'].PUT should return a 200 response after a succesful downvote and send back the downvoted comment', () => {
+      const response = routes['/comments/:id/downvote']['PUT']('/comments/1/downvote', { body: { username: 'other_user' } });
+
+      expect(response).to.exist;
+      expect(response.status).to.equal(200);
+      expect(response.body.comment).to.eql(database.comments[1]);
+    });
+
+    it('routes[\'/comments/:id/downvote\'].PUT should return a 400 response when given no username', () => {
+      const response = routes['/comments/:id/downvote']['PUT']('/comments/1/downvote', { body: {} });
+
+      expect(response).to.exist;
+      expect(response.status).to.equal(400);
+    });
+
+
+    it('routes[\'/comments/:id/downvote\'].PUT should return a 400 response when supplied a non-existent user', () => {
+      const response = routes['/comments/:id/downvote']['PUT']('/comments/1/downvote', { body: { username: 'nonexistent_user' } });
+
+      expect(response).to.exist;
+      expect(response.status).to.equal(400);
+    });
+
+    it('routes[\'/comments/:id/downvote\'].PUT should return a 400 response when supplied a non-existent comment ID', () => {
+      const response = routes['/comments/:id/downvote']['PUT']('/comments/2/downvote', { body: { username: 'other_user' } });
+
+      expect(response).to.exist;
+      expect(response.status).to.equal(400);
+    });
+
+    it('routes[\'/comments/:id/downvote\'].PUT should return a 400 response when given no request body', () => {
+      const response = routes['/comments/:id/downvote']['PUT']('/comments/1/downvote', {});
+
+      expect(response).to.exist;
+      expect(response.status).to.equal(400);
+    });
+  });
 });
