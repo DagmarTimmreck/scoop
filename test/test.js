@@ -38,10 +38,10 @@ describe('Scoop - server.js: ', () => {
       expect(routes['/comments']).to.be.an('object');
     });
 
-    // it('routes should have a property called /comments/:id initialized to an object', () => {
-    //   expect(routes['/comments/:id']).to.be.an('object');
-    // });
-    //
+    it('routes should have a property called /comments/:id initialized to an object', () => {
+      expect(routes['/comments/:id']).to.be.an('object');
+    });
+
   //   it('routes should have a property called /comments/:id/upvote initialized to an object', () => {
   //     expect(routes['/comments/:id/upvote']).to.be.an('object');
   //   });
@@ -206,100 +206,100 @@ describe('Scoop - server.js: ', () => {
       expect(response.status).to.equal(400);
     });
   });
-  //
-  // describe('/comments/:id PUT', () => {
-  //   beforeEach(() => {
-  //     database.comments[1] = {
-  //       id: 1,
-  //       body: 'Body',
-  //       username: 'existing_user',
-  //       articleId: 1,
-  //     };
-  //   });
-  //
-  //   it('routes[\'/comments/:id\'] should have a method called PUT', () => {
-  //     expect(routes['/comments/:id']['PUT']).to.exist;
-  //   });
-  //
-  //   it('routes[\'/comments/:id\'].PUT should update an existing comment', () => {
-  //     const updatedComment = {
-  //       id: 1,
-  //       body: 'Updated Body',
-  //       username: 'existing_user',
-  //       articleId: 1,
-  //     };
-  //     routes['/comments/:id']['PUT']('/comments/1', { body: { comment: updatedComment } });
-  //
-  //     expect(database.comments[1].body).to.equal(updatedComment.body);
-  //   });
-  //
-  //   it('routes[\'/comments/:id\'].PUT should not update uneditable fields', () => {
-  //     const updatedComment = {
-  //       id: 2,
-  //       body: 'Updated Body',
-  //       username: 'existing_user2',
-  //       articleId: 2,
-  //     };
-  //     routes['/comments/:id']['PUT']('/comments/1', { body: { comment: updatedComment } });
-  //
-  //     expect(database.comments[1].id).to.equal(1);
-  //     expect(database.comments[1].username).to.equal('existing_user');
-  //     expect(database.comments[1].articleId).to.equal(1);
-  //   });
-  //
-  //   it('routes[\'/comments/:id\'].PUT should not update fields to invalid values', () => {
-  //     const updatedComment = {
-  //       id: 1,
-  //       body: '',
-  //       username: 'existing_user',
-  //       articleId: 1,
-  //     };
-  //     routes['/comments/:id']['PUT']('/comments/1', { body: { comment: updatedComment } });
-  //
-  //     expect(database.comments[1].body).to.not.equal('');
-  //   });
-  //
-  //   it('routes[\'/articles/:id\'].PUT should return a 200 response after a succesful update', () => {
-  //     const updatedComment = {
-  //       id: 1,
-  //       body: 'Updated Body',
-  //       username: 'existing_user',
-  //       articleId: 1,
-  //     };
-  //     const response = routes['/comments/:id']['PUT']('/comments/1', { body: { comment: updatedComment } });
-  //
-  //     expect(response).to.exist;
-  //     expect(response.status).to.equal(200);
-  //   });
-  //
-  //   it('routes[\'/comments/:id\'].PUT should return a 404 response with a non-existent comment', () => {
-  //     const updatedComment = {
-  //       id: 1,
-  //       body: 'Updated Body',
-  //       username: 'existing_user',
-  //       articleId: 1,
-  //     };
-  //     const response = routes['/comments/:id']['PUT']('/comments/2', { body: { comment: updatedComment } });
-  //
-  //     expect(response).to.exist;
-  //     expect(response.status).to.equal(404);
-  //   });
-  //
-  //   it('routes[\'/comments/:id\'].PUT should return a 400 response when not supplied a request body', () => {
-  //     const response = routes['/comments/:id']['PUT']('/comments/1', {});
-  //
-  //     expect(response).to.exist;
-  //     expect(response.status).to.equal(400);
-  //   });
-  //
-  //   it('routes[\'/comments/:id\'].PUT should return a 400 response when not supplied an updated comment', () => {
-  //     const response = routes['/comments/:id']['PUT']('/comments/1', { body: {} });
-  //
-  //     expect(response).to.exist;
-  //     expect(response.status).to.equal(400);
-  //   });
-  // });
-  //
+
+  describe('/comments/:id PUT', () => {
+    beforeEach(() => {
+      database.comments[1] = {
+        id: 1,
+        body: 'Body',
+        username: 'existing_user',
+        articleId: 1,
+      };
+    });
+
+    it('routes[\'/comments/:id\'] should have a method called PUT', () => {
+      expect(routes['/comments/:id']['PUT']).to.exist;
+    });
+
+    it('routes[\'/comments/:id\'].PUT should update an existing comment', () => {
+      const updatedComment = {
+        id: 1,
+        body: 'Updated Body',
+        username: 'existing_user',
+        articleId: 1,
+      };
+      routes['/comments/:id']['PUT']('/comments/1', { body: { comment: updatedComment } });
+
+      expect(database.comments[1].body).to.equal(updatedComment.body);
+    });
+
+    it('routes[\'/comments/:id\'].PUT should not update uneditable fields', () => {
+      const updatedComment = {
+        id: 2,
+        body: 'Updated Body',
+        username: 'existing_user2',
+        articleId: 2,
+      };
+      routes['/comments/:id']['PUT']('/comments/1', { body: { comment: updatedComment } });
+
+      expect(database.comments[1].id).to.equal(1);
+      expect(database.comments[1].username).to.equal('existing_user');
+      expect(database.comments[1].articleId).to.equal(1);
+    });
+
+    it('routes[\'/comments/:id\'].PUT should not update fields to invalid values', () => {
+      const updatedComment = {
+        id: 1,
+        body: '',
+        username: 'existing_user',
+        articleId: 1,
+      };
+      routes['/comments/:id']['PUT']('/comments/1', { body: { comment: updatedComment } });
+
+      expect(database.comments[1].body).to.not.equal('');
+    });
+
+    it('routes[\'/articles/:id\'].PUT should return a 200 response after a succesful update', () => {
+      const updatedComment = {
+        id: 1,
+        body: 'Updated Body',
+        username: 'existing_user',
+        articleId: 1,
+      };
+      const response = routes['/comments/:id']['PUT']('/comments/1', { body: { comment: updatedComment } });
+
+      expect(response).to.exist;
+      expect(response.status).to.equal(200);
+    });
+
+    it('routes[\'/comments/:id\'].PUT should return a 404 response with a non-existent comment', () => {
+      const updatedComment = {
+        id: 1,
+        body: 'Updated Body',
+        username: 'existing_user',
+        articleId: 1,
+      };
+      const response = routes['/comments/:id']['PUT']('/comments/2', { body: { comment: updatedComment } });
+
+      expect(response).to.exist;
+      expect(response.status).to.equal(404);
+    });
+
+    it('routes[\'/comments/:id\'].PUT should return a 400 response when not supplied a request body', () => {
+      const response = routes['/comments/:id']['PUT']('/comments/1', {});
+
+      expect(response).to.exist;
+      expect(response.status).to.equal(400);
+    });
+
+    it('routes[\'/comments/:id\'].PUT should return a 400 response when not supplied an updated comment', () => {
+      const response = routes['/comments/:id']['PUT']('/comments/1', { body: {} });
+
+      expect(response).to.exist;
+      expect(response.status).to.equal(400);
+    });
+  });
+
   // describe('/comments/:id DELETE', () => {
   //   beforeEach(() => {
   //     database.users['user'] = {

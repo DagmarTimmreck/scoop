@@ -32,6 +32,9 @@ const routes = {
   '/comments': {
     'POST': createComment,
   },
+  '/comments/:id': {
+    'PUT': updateComment,
+  },
 };
 
 // user
@@ -254,6 +257,26 @@ function createComment(url, request) {
   } else {
     response.status = 400;
   }
+  return response;
+}
+
+function updateComment(url, request) {
+  const id = Number(url.split('/').filter(segment => segment)[1]);
+  const savedComment = database.comments[id];
+  const requestComment = request.body && request.body.comment;
+  const response = {};
+
+  if (savedComment) {
+    if (requestComment && requestComment.body) {
+      savedComment.body = requestComment.body;
+      response.status = 200;
+    } else {
+      response.status = 400;
+    }
+  } else {
+    response.status = 404;
+  }
+
   return response;
 }
 
