@@ -1,48 +1,48 @@
 // database is let instead of const to allow us to modify it in test.js
-let database = {
+const database = {
   users: {},
   articles: {},
-  nextArticleId: 1
+  nextArticleId: 1,
 };
 
 const routes = {
   '/users': {
-    'POST': getOrCreateUser
+    'POST': getOrCreateUser,
   },
   '/users/:username': {
-    'GET': getUser
+    'GET': getUser,
   },
   '/articles': {
     'GET': getArticles,
-    'POST': createArticle
+    'POST': createArticle,
   },
   '/articles/:id': {
     'GET': getArticle,
     'PUT': updateArticle,
-    'DELETE': deleteArticle
+    'DELETE': deleteArticle,
   },
   '/articles/:id/upvote': {
-    'PUT': upvoteArticle
+    'PUT': upvoteArticle,
   },
   '/articles/:id/downvote': {
-    'PUT': downvoteArticle
-  }
+    'PUT': downvoteArticle,
+  },
 };
 
-function getUser(url, request) {
+function getUser(url) {
   const username = url.split('/').filter(segment => segment)[1];
   const user = database.users[username];
   const response = {};
 
   if (user) {
     const userArticles = user.articleIds.map(
-        articleId => database.articles[articleId]);
+      articleId => database.articles[articleId]);
     const userComments = user.commentIds.map(
-        commentId => database.comments[commentId]);
+      commentId => database.comments[commentId]);
     response.body = {
-      user: user,
-      userArticles: userArticles,
-      userComments: userComments
+      user,
+      userArticles,
+      userComments,
     };
     response.status = 200;
   } else if (username) {
@@ -59,17 +59,17 @@ function getOrCreateUser(url, request) {
   const response = {};
 
   if (database.users[username]) {
-    response.body = {user: database.users[username]};
+    response.body = { user: database.users[username] };
     response.status = 200;
   } else if (username) {
     const user = {
-      username: username,
+      username,
       articleIds: [],
-      commentIds: []
+      commentIds: [],
     };
     database.users[username] = user;
 
-    response.body = {user: user};
+    response.body = { user };
     response.status = 201;
   } else {
     response.status = 400;
@@ -78,21 +78,21 @@ function getOrCreateUser(url, request) {
   return response;
 }
 
-function getArticles(url, request) {
+function getArticles() {
   const response = {};
 
   response.status = 200;
   response.body = {
     articles: Object.keys(database.articles)
-        .map(articleId => database.articles[articleId])
-        .filter(article => article)
-        .sort((article1, article2) => article2.id - article1.id)
+      .map(articleId => database.articles[articleId])
+      .filter(article => article)
+      .sort((article1, article2) => article2.id - article1.id),
   };
 
   return response;
 }
 
-function getArticle(url, request) {
+function getArticle(url) {
   const id = Number(url.split('/').filter(segment => segment)[1]);
   const article = database.articles[id];
   const response = {};
@@ -101,7 +101,7 @@ function getArticle(url, request) {
     article.comments = article.commentIds.map(
       commentId => database.comments[commentId]);
 
-    response.body = {article: article};
+    response.body = { article };
     response.status = 200;
   } else if (id) {
     response.status = 404;
@@ -125,13 +125,13 @@ function createArticle(url, request) {
       username: requestArticle.username,
       commentIds: [],
       upvotedBy: [],
-      downvotedBy: []
+      downvotedBy: [],
     };
 
     database.articles[article.id] = article;
     database.users[article.username].articleIds.push(article.id);
 
-    response.body = {article: article};
+    response.body = { article };
     response.status = 201;
   } else {
     response.status = 400;
@@ -154,21 +154,21 @@ function updateArticle(url, request) {
     savedArticle.title = requestArticle.title || savedArticle.title;
     savedArticle.url = requestArticle.url || savedArticle.url;
 
-    response.body = {article: savedArticle};
+    response.body = { article: savedArticle };
     response.status = 200;
   }
 
   return response;
 }
 
-function deleteArticle(url, request) {
+function deleteArticle(url) {
   const id = Number(url.split('/').filter(segment => segment)[1]);
   const savedArticle = database.articles[id];
   const response = {};
 
   if (savedArticle) {
     database.articles[id] = null;
-    savedArticle.commentIds.forEach(commentId => {
+    savedArticle.commentIds.forEach((commentId) => {
       const comment = database.comments[commentId];
       database.comments[commentId] = null;
       const userCommentIds = database.users[comment.username].commentIds;
@@ -193,7 +193,7 @@ function upvoteArticle(url, request) {
   if (savedArticle && database.users[username]) {
     savedArticle = upvote(savedArticle, username);
 
-    response.body = {article: savedArticle};
+    response.body = { article: savedArticle };
     response.status = 200;
   } else {
     response.status = 400;
@@ -211,7 +211,7 @@ function downvoteArticle(url, request) {
   if (savedArticle && database.users[username]) {
     savedArticle = downvote(savedArticle, username);
 
-    response.body = {article: savedArticle};
+    response.body = { article: savedArticle };
     response.status = 200;
   } else {
     response.status = 400;
@@ -243,10 +243,10 @@ function downvote(item, username) {
 // Write all code above this line.
 
 const http = require('http');
-const url = require('url');
+// const url = require('url');
 
 const port = process.env.PORT || 4000;
-const isTestMode = process.env.IS_TEST_MODE;
+// const isTestMode = process.env.IS_TEST_MODE;
 
 const requestHandler = (request, response) => {
   const url = request.url;
@@ -254,12 +254,12 @@ const requestHandler = (request, response) => {
   const route = getRequestRoute(url);
 
   if (method === 'OPTIONS') {
-    var headers = {};
-    headers["Access-Control-Allow-Origin"] = "*";
-    headers["Access-Control-Allow-Methods"] = "POST, GET, PUT, DELETE, OPTIONS";
-    headers["Access-Control-Allow-Credentials"] = false;
-    headers["Access-Control-Max-Age"] = '86400'; // 24 hours
-    headers["Access-Control-Allow-Headers"] = "X-Requested-With, X-HTTP-Method-Override, Content-Type, Accept";
+    const headers = {};
+    headers['Access-Control-Allow-Origin'] = '*';
+    headers['Access-Control-Allow-Methods'] = 'POST, GET, PUT, DELETE, OPTIONS';
+    headers['Access-Control-Allow-Credentials'] = false;
+    headers['Access-Control-Max-Age'] = '86400'; // 24 hours
+    headers['Access-Control-Allow-Headers'] = 'X-Requested-With, X-HTTP-Method-Override, Content-Type, Accept';
     response.writeHead(200, headers);
     return response.end();
   }
@@ -267,7 +267,7 @@ const requestHandler = (request, response) => {
   response.setHeader('Access-Control-Allow-Origin', null);
   response.setHeader('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, OPTIONS');
   response.setHeader(
-      'Access-Control-Allow-Headers', 'X-Requested-With,content-type');
+    'Access-Control-Allow-Headers', 'X-Requested-With,content-type');
 
   if (!routes[route] || !routes[route][method]) {
     response.statusCode = 400;
@@ -276,8 +276,7 @@ const requestHandler = (request, response) => {
 
   if (method === 'GET' || method === 'DELETE') {
     const methodResponse = routes[route][method].call(null, url);
-    !isTestMode && (typeof saveDatabase === 'function') && saveDatabase();
-
+    // !isTestMode && (typeof saveDatabase === 'function') && saveDatabase();
     response.statusCode = methodResponse.status;
     response.end(JSON.stringify(methodResponse.body) || '');
   } else {
@@ -286,10 +285,9 @@ const requestHandler = (request, response) => {
       body.push(chunk);
     }).on('end', () => {
       body = JSON.parse(Buffer.concat(body).toString());
-      const jsonRequest = {body: body};
+      const jsonRequest = { body };
       const methodResponse = routes[route][method].call(null, url, jsonRequest);
-      !isTestMode && (typeof saveDatabase === 'function') && saveDatabase();
-
+      // !isTestMode && (typeof saveDatabase === 'function') && saveDatabase();
       response.statusCode = methodResponse.status;
       response.end(JSON.stringify(methodResponse.body) || '');
     });
@@ -305,19 +303,18 @@ const getRequestRoute = (url) => {
     return `/${pathSegments[0]}/:id/${pathSegments[2]}`;
   } else if (pathSegments[0] === 'users') {
     return `/${pathSegments[0]}/:username`;
-  } else {
-    return `/${pathSegments[0]}/:id`;
   }
-}
+  return `/${pathSegments[0]}/:id`;
+};
 
-if (typeof loadDatabase === 'function' && !isTestMode) {
-  const savedDatabase = loadDatabase();
-  if (savedDatabase) {
-    for (key in database) {
-      database[key] = savedDatabase[key] || database[key];
-    }
-  }
-}
+// if (typeof loadDatabase === 'function' && !isTestMode) {
+//   const savedDatabase = loadDatabase();
+//   if (savedDatabase) {
+//     for (key in database) {
+//       database[key] = savedDatabase[key] || database[key];
+//     }
+//   }
+// }
 
 const server = http.createServer(requestHandler);
 

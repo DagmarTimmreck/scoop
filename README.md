@@ -1,5 +1,11 @@
 # The Scoop
 
+## What I did
+
+- setup eslint to work with atom and airbnb-presets / adjust to given style / clean up according to remaining rules
+- comment out all database save/load related stuff
+
+
 ## Project Overview
 
 In this project, you will build all of the routing and database logic for an article submission web app called The Scoop.
