@@ -1,3 +1,6 @@
+const yaml = require('js-yaml');
+const fs = require('fs');
+
 // database is let instead of const to allow us to modify it in test.js
 let database = {
   users: {},
@@ -361,13 +364,34 @@ function downvote(item, username) {
   return item;
 }
 
+// database persistance
+function loadDatabase() {
+  // Get document, or throw exception on error
+  try {
+    const doc = yaml.safeLoad(fs.readFileSync('./scoop-data.yml', 'utf8'));
+    database = doc;
+  } catch (e) {
+    console.log(e);
+  }
+}
+
+function saveDatabase() {
+  // Save document, or throw exception on error
+  try {
+    let doc = yaml.safeDump(database);
+    fs.writeFileSync('./scoop-data.yml', doc, 'utf8');
+  } catch (e) {
+    console.log(e);
+  }
+}
+
 // Write all code above this line.
 
 const http = require('http');
 // const url = require('url');
 
 const port = process.env.PORT || 4000;
-// const isTestMode = process.env.IS_TEST_MODE;
+const isTestMode = process.env.IS_TEST_MODE;
 
 const requestHandler = (request, response) => {
   const url = request.url;
@@ -397,7 +421,7 @@ const requestHandler = (request, response) => {
 
   if (method === 'GET' || method === 'DELETE') {
     const methodResponse = routes[route][method].call(null, url);
-    // !isTestMode && (typeof saveDatabase === 'function') && saveDatabase();
+    !isTestMode && (typeof saveDatabase === 'function') && saveDatabase();
     response.statusCode = methodResponse.status;
     response.end(JSON.stringify(methodResponse.body) || '');
   } else {
@@ -408,7 +432,7 @@ const requestHandler = (request, response) => {
       body = JSON.parse(Buffer.concat(body).toString());
       const jsonRequest = { body };
       const methodResponse = routes[route][method].call(null, url, jsonRequest);
-      // !isTestMode && (typeof saveDatabase === 'function') && saveDatabase();
+      !isTestMode && (typeof saveDatabase === 'function') && saveDatabase();
       response.statusCode = methodResponse.status;
       response.end(JSON.stringify(methodResponse.body) || '');
     });
@@ -428,14 +452,14 @@ const getRequestRoute = (url) => {
   return `/${pathSegments[0]}/:id`;
 };
 
-// if (typeof loadDatabase === 'function' && !isTestMode) {
-//   const savedDatabase = loadDatabase();
-//   if (savedDatabase) {
-//     for (key in database) {
-//       database[key] = savedDatabase[key] || database[key];
-//     }
-//   }
-// }
+if (typeof loadDatabase === 'function' && !isTestMode) {
+  const savedDatabase = loadDatabase();
+  if (savedDatabase) {
+    for (let key in database) {
+      database[key] = savedDatabase[key] || database[key];
+    }
+  }
+}
 
 const server = http.createServer(requestHandler);
 

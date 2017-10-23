@@ -1,0 +1,83 @@
+users:
+  me:
+    username: me
+    articleIds:
+      - 4
+    commentIds:
+      - 3
+  user:
+    username: user
+    articleIds:
+      - 2
+    commentIds:
+      - 1
+  another user:
+    username: another user
+    articleIds:
+      - 3
+    commentIds:
+      - 2
+articles:
+  '1': null
+  '2':
+    id: 2
+    title: article
+    url: www.article.com
+    username: user
+    commentIds:
+      - 3
+    upvotedBy:
+      - another user
+      - me
+    downvotedBy: []
+    comments: []
+  '3':
+    id: 3
+    title: another article
+    url: www.another.net
+    username: another user
+    commentIds:
+      - 1
+      - 2
+    upvotedBy:
+      - another user
+    downvotedBy:
+      - user
+      - me
+    comments:
+      - &ref_0
+        id: 1
+        body: I like comments!
+        username: user
+        articleId: 3
+        upvotedBy: []
+        downvotedBy:
+          - another user
+      - &ref_1
+        id: 2
+        body: |
+          and I like my article...
+        username: another user
+        articleId: 3
+        upvotedBy: []
+        downvotedBy: []
+  '4':
+    id: 4
+    title: my article
+    url: www.article.my
+    username: me
+    commentIds: []
+    upvotedBy: []
+    downvotedBy: []
+nextArticleId: 5
+comments:
+  '1': *ref_0
+  '2': *ref_1
+  '3':
+    id: 3
+    body: my comment
+    username: me
+    articleId: 2
+    upvotedBy: []
+    downvotedBy: []
+nextCommentId: 4
