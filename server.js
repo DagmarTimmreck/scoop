@@ -364,9 +364,9 @@ function downvote(item, username) {
   return item;
 }
 
-// database persistance
+// database persistence
 function loadDatabase() {
-  // Get document, or throw exception on error
+  // Get document, or console.log error
   try {
     const doc = yaml.safeLoad(fs.readFileSync('./scoop-data.yml', 'utf8'));
     database = doc;
@@ -376,7 +376,7 @@ function loadDatabase() {
 }
 
 function saveDatabase() {
-  // Save document, or throw exception on error
+  // Save document, or console.log error
   try {
     let doc = yaml.safeDump(database);
     fs.writeFileSync('./scoop-data.yml', doc, 'utf8');

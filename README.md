@@ -8,6 +8,9 @@
 - switched order of tests and added custom messages to sub-tests
 - reused the upvote and downvote functions
 - double check with the specification and update 'routes[\'/comments/:id\'].PUT should return a 200 response after a succesful update' to 'routes[\'/comments/:id\'].PUT should return a 200 response containing the updated comment after a succesful update'
+- implement data persistence with yaml
+- briefly contemplated to refactor and extract common methods for articles/comments (like upvote and downvote) but didn't because I would need a test suite for the articles as well to ensure that everything still works.
+
 
 
 
